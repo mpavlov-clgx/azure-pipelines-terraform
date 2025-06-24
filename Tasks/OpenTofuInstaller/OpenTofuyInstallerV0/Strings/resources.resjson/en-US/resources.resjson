@@ -1,0 +1,16 @@
+{
+  "loc.friendlyName": "OpenTofu tool installer",
+  "loc.helpMarkDown": "[Learn more about this task](https://aka.ms/AAf1a0p)",
+  "loc.description": "Find in cache or download a specific version of OpenTofu and prepend it to the PATH",
+  "loc.instanceNameFormat": "Install OpenTofu $(openTofuVersion)",
+  "loc.input.label.openTofuVersion": "Version",
+  "loc.input.help.openToFuVersion": "The version of OpenTofu which should be installed on the agent if not already present",
+  "loc.messages.VerifyOpenTofuInstallation": "Verifying OpenTofu installation...",
+  "loc.messages.InputVersionNotValidSemanticVersion": "Input version %s is not a valid semantic version",
+  "loc.messages.OpenTofuNotFoundInFolder": "OpenTofu executable not found in path %s",
+  "loc.messages.OperatingSystemNotSupported": "Operating system %s is not supported",
+  "loc.messages.ArchitectureNotSupported": "Architecture %s is not supported",
+  "loc.messages.OpenTofuDownloadFailed": "Failed to download OpenTofu from url %s. Error %s",
+  "loc.messages.OpenTofuVersionNotFound": "Unable to get latest version: using 1.1.6",
+  "loc.messages.GettingLatestOpenTofuVersion": "Getting latest OpenTofu version."
+}
