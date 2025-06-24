@@ -1,4 +1,4 @@
-import { TerraformCommandHandlerAzureRM } from '../src/azure-terraform-command-handler';
+import { TerraformCommandHandlerAzureRM } from '../src/azure-opentofu-command-handler';
 import tasks = require('azure-pipelines-task-lib');
 
 let terraformCommandHandlerAzureRM: TerraformCommandHandlerAzureRM = new TerraformCommandHandlerAzureRM();

@@ -1,17 +1,17 @@
 import tasks = require("azure-pipelines-task-lib/task");
 import {ToolRunner} from "azure-pipelines-task-lib/toolrunner";
-import {TerraformAuthorizationCommandInitializer} from "./terraform-commands";
-import {BaseTerraformCommandHandler} from "./base-terraform-command-handler";
+import {OpenTofuAuthorizationCommandInitializer} from "./opentofu-commands";
+import {BaseOpenTofuCommandHandler} from "./base-terraform-command-handler";
 import {EnvironmentVariableHelper} from "./environment-variables";
 import {generateIdToken} from './id-token-generator';
 
-export class TerraformCommandHandlerAzureRM extends BaseTerraformCommandHandler {
+export class OpenTofuCommandHandlerAzureRM extends BaseOpenTofuCommandHandler {
     constructor() {
         super();
         this.providerName = "azurerm";
     }
 
-    public async handleBackend(terraformToolRunner: ToolRunner): Promise<void> {
+    public async handleBackend(opentofuToolRunner: ToolRunner): Promise<void> {
         let serviceConnectionID = tasks.getInput("backendServiceArm", true);
         const authorizationScheme = this.mapAuthorizationScheme(tasks.getEndpointAuthorizationScheme(serviceConnectionID, true));
 
@@ -48,13 +48,13 @@ export class TerraformCommandHandlerAzureRM extends BaseTerraformCommandHandler 
         await this.setCommonVariables(authorizationScheme, serviceConnectionID, fallbackToIdTokenGeneration, backendAzureRmUseCliFlagsForAuthentication);
 
         for (let [key, value] of this.backendConfig.entries()) {
-            terraformToolRunner.arg(`-backend-config=${key}=${value}`);
+            opentofuToolRunner.arg(`-backend-config=${key}=${value}`);
         }
 
         tasks.debug("Finished setting up backend for authorization scheme: " + authorizationScheme + ".");
     }
 
-    public async handleProvider(command: TerraformAuthorizationCommandInitializer) : Promise<void> {
+    public async handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void> {
         var serviceConnectionID = tasks.getInput("environmentServiceNameAzureRM", true);
         const authorizationScheme = this.mapAuthorizationScheme(tasks.getEndpointAuthorizationScheme(serviceConnectionID, true));
 

@@ -1,9 +1,9 @@
 import tasks = require('azure-pipelines-task-lib/task');
 import {ToolRunner} from 'azure-pipelines-task-lib/toolrunner';
-import {TerraformAuthorizationCommandInitializer} from './terraform-commands';
-import {BaseTerraformCommandHandler} from './base-terraform-command-handler';
+import {OpenTofuAuthorizationCommandInitializer} from './opentofu-commands';
+import {BaseOpenTofuCommandHandler} from './base-terraform-command-handler';
 
-export class TerraformCommandHandlerAWS extends BaseTerraformCommandHandler {
+export class TerraformCommandHandlerAWS extends BaseOpenTofuCommandHandler {
     constructor() {
         super();
         this.providerName = "aws";
@@ -26,7 +26,7 @@ export class TerraformCommandHandlerAWS extends BaseTerraformCommandHandler {
         }
     }
 
-    public async handleProvider(command: TerraformAuthorizationCommandInitializer) : Promise<void> {
+    public async handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void> {
         if (command.serviceProvidername) {
             process.env['AWS_ACCESS_KEY_ID']  = tasks.getEndpointAuthorizationParameter(command.serviceProvidername, "username", false);
             process.env['AWS_SECRET_ACCESS_KEY']  = tasks.getEndpointAuthorizationParameter(command.serviceProvidername, "password", false);            

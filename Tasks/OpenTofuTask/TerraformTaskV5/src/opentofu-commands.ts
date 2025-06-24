@@ -1,4 +1,4 @@
-export class TerraformBaseCommandInitializer {
+export class OpenTofuBaseCommandInitializer {
     public readonly name: string;
     public readonly workingDirectory: string;
     public readonly additionalArgs: string | undefined;
@@ -14,7 +14,7 @@ export class TerraformBaseCommandInitializer {
     }
 }
 
-export class TerraformAuthorizationCommandInitializer extends TerraformBaseCommandInitializer {
+export class OpenTofuAuthorizationCommandInitializer extends OpenTofuBaseCommandInitializer {
     readonly serviceProvidername: string;
 
     constructor(

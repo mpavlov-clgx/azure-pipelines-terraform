@@ -1,23 +1,23 @@
-import {TerraformToolHandler, ITerraformToolHandler} from './terraform';
+import {OpenTofuToolHandler, IOpenTofuToolHandler} from './opentofu';
 import {ToolRunner, IExecOptions, IExecSyncOptions, IExecSyncResult} from 'azure-pipelines-task-lib/toolrunner';
-import {TerraformBaseCommandInitializer, TerraformAuthorizationCommandInitializer} from './terraform-commands';
+import {OpenTofuBaseCommandInitializer, OpenTofuAuthorizationCommandInitializer} from './opentofu-commands';
 import tasks = require('azure-pipelines-task-lib/task');
 import path = require('path');
 import * as uuidV4 from 'uuid/v4';
 const fs = require('fs');
 const del = require('del');
 
-export abstract class BaseTerraformCommandHandler {
+export abstract class BaseOpenTofuCommandHandler {
     providerName: string;
-    terraformToolHandler: ITerraformToolHandler;
+    terraformToolHandler: IOpenTofuToolHandler;
     backendConfig: Map<string, string>;
 
     abstract handleBackend(terraformToolRunner: ToolRunner) : Promise<void>;
-    abstract handleProvider(command: TerraformAuthorizationCommandInitializer) : Promise<void>;
-    
+    abstract handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void>;
+
     constructor() {
         this.providerName = "";
-        this.terraformToolHandler = new TerraformToolHandler(tasks);
+        this.terraformToolHandler = new OpenTofuToolHandler(tasks);
         this.backendConfig = new Map<string, string>();
     }
 
@@ -41,16 +41,16 @@ export abstract class BaseTerraformCommandHandler {
     }
 
     public warnIfMultipleProviders(): void {
-        let terraformPath;
+        let opentofuPath;
         try {
-            terraformPath = tasks.which("terraform", true);
+            opentofuPath = tasks.which("opentofu", true);
         } catch(err) {
-            throw new Error(tasks.loc("TerraformToolNotFound"));
+            throw new Error(tasks.loc("OpenTofuToolNotFound"));
         }
 
-        let terraformToolRunner: ToolRunner = tasks.tool(terraformPath);
-        terraformToolRunner.arg("providers");
-        let commandOutput = terraformToolRunner.execSync(<IExecSyncOptions>{
+        let opentofuToolRunner: ToolRunner = tasks.tool(opentofuPath);
+        opentofuToolRunner.arg("providers");
+        let commandOutput = opentofuToolRunner.execSync(<IExecSyncOptions>{
             cwd: tasks.getInput("workingDirectory")
         });
 
@@ -74,18 +74,18 @@ export abstract class BaseTerraformCommandHandler {
     }
 
     public async init(): Promise<number> {
-        let initCommand = new TerraformBaseCommandInitializer(
+        let initCommand = new OpenTofuBaseCommandInitializer(
             "init",
             tasks.getInput("workingDirectory"),
             tasks.getInput("commandOptions")
         );
-        
-        let terraformTool;
-        
-        terraformTool = this.terraformToolHandler.createToolRunner(initCommand);
-        await this.handleBackend(terraformTool);
-        
-        return await terraformTool.execAsync(<IExecOptions> {
+
+        let opentofuTool;
+
+        opentofuTool = this.terraformToolHandler.createToolRunner(initCommand);
+        await this.handleBackend(opentofuTool);
+
+        return await opentofuTool.execAsync(<IExecOptions> {
             cwd: initCommand.workingDirectory
         });
     }
@@ -99,23 +99,23 @@ export abstract class BaseTerraformCommandHandler {
             }else{
                 cmd = tasks.getInput("commandOptions") != null ? tasks.getInput("commandOptions"):``;
             }
-    
-        let showCommand = new TerraformAuthorizationCommandInitializer(
+
+        let showCommand = new OpenTofuAuthorizationCommandInitializer(
             "show",
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             cmd
         );
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(showCommand);
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(showCommand);
         await this.handleProvider(showCommand);
         
         if(outputTo == "console"){
-            return await terraformTool.execAsync(<IExecOptions> {
+            return await opentofuTool.execAsync(<IExecOptions> {
             cwd: showCommand.workingDirectory});
         }else if(outputTo == "file"){
             const showFilePath = path.resolve(tasks.getInput("filename"));
-            let commandOutput = await terraformTool.execSync(<IExecSyncOptions> {
+            let commandOutput = await opentofuTool.execSync(<IExecSyncOptions> {
                 cwd: showCommand.workingDirectory,
             });
             
@@ -128,20 +128,20 @@ export abstract class BaseTerraformCommandHandler {
     public async output(): Promise<number> {
         let serviceName = `environmentServiceName${this.getServiceProviderNameFromProviderInput()}`;
         let commandOptions = tasks.getInput("commandOptions") != null ? `-json ${tasks.getInput("commandOptions")}`:`-json`
-        
-        let outputCommand = new TerraformAuthorizationCommandInitializer(
+
+        let outputCommand = new OpenTofuAuthorizationCommandInitializer(
             "output",
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             commandOptions
         );
 
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(outputCommand);
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(outputCommand);
         await this.handleProvider(outputCommand);
 
         const jsonOutputVariablesFilePath = path.resolve(`output-${uuidV4()}.json`);
-        let commandOutput = await terraformTool.execSync(<IExecSyncOptions>{
+        let commandOutput = await opentofuTool.execSync(<IExecSyncOptions>{
             cwd: outputCommand.workingDirectory,
         });
 
@@ -154,19 +154,19 @@ export abstract class BaseTerraformCommandHandler {
     public async plan(): Promise<number> {
         let serviceName = `environmentServiceName${this.getServiceProviderNameFromProviderInput()}`;
         let commandOptions = tasks.getInput("commandOptions") != null ? `${tasks.getInput("commandOptions")} -detailed-exitcode`:`-detailed-exitcode`
-        let planCommand = new TerraformAuthorizationCommandInitializer(
+        let planCommand = new OpenTofuAuthorizationCommandInitializer(
             "plan",
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             commandOptions
         );
-        
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(planCommand);
+
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(planCommand);
         await this.handleProvider(planCommand);
         this.warnIfMultipleProviders();
-    
-        let result = await terraformTool.execAsync(<IExecOptions> {
+
+        let result = await opentofuTool.execAsync(<IExecOptions> {
             cwd: planCommand.workingDirectory,
             ignoreReturnCode: true
         });
@@ -181,23 +181,23 @@ export abstract class BaseTerraformCommandHandler {
     public async custom(): Promise<number> {
         const outputTo = tasks.getInput("outputTo");
         let serviceName = `environmentServiceName${this.getServiceProviderNameFromProviderInput()}`;
-        let customCommand = new TerraformAuthorizationCommandInitializer(
+        let customCommand = new OpenTofuAuthorizationCommandInitializer(
             tasks.getInput("customCommand"),
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             tasks.getInput("commandOptions")
         );
-        
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(customCommand);
+
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(customCommand);
         await this.handleProvider(customCommand);
 
         if(outputTo == "console"){
-            return await terraformTool.execAsync(<IExecOptions> {
+            return await opentofuTool.execAsync(<IExecOptions> {
             cwd: customCommand.workingDirectory});
         }else if(outputTo == "file"){
             const customFilePath = path.resolve(tasks.getInput("filename"));
-            let commandOutput = await terraformTool.execSync(<IExecSyncOptions> {
+            let commandOutput = await opentofuTool.execSync(<IExecSyncOptions> {
                 cwd: customCommand.workingDirectory});
             
             tasks.writeFile(customFilePath, commandOutput.stdout);
@@ -207,7 +207,7 @@ export abstract class BaseTerraformCommandHandler {
     }
 
     public async apply(): Promise<number> {
-        let terraformTool;
+        let opentofuTool;
         let serviceName = `environmentServiceName${this.getServiceProviderNameFromProviderInput()}`;
         let autoApprove: string = '-auto-approve';
         let additionalArgs: string = tasks.getInput("commandOptions") || autoApprove;
@@ -216,18 +216,18 @@ export abstract class BaseTerraformCommandHandler {
             additionalArgs = `${autoApprove} ${additionalArgs}`;
         }
 
-        let applyCommand = new TerraformAuthorizationCommandInitializer(
+        let applyCommand = new OpenTofuAuthorizationCommandInitializer(
             "apply",
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             additionalArgs
         );
 
-        terraformTool = this.terraformToolHandler.createToolRunner(applyCommand);
+        opentofuTool = this.terraformToolHandler.createToolRunner(applyCommand);
         await this.handleProvider(applyCommand);
         this.warnIfMultipleProviders();
 
-        return await terraformTool.execAsync(<IExecOptions> {
+        return await opentofuTool.execAsync(<IExecOptions> {
             cwd: applyCommand.workingDirectory
         });
     }
@@ -242,34 +242,34 @@ export abstract class BaseTerraformCommandHandler {
             additionalArgs = `${autoApprove} ${additionalArgs}`;
         }
 
-        let destroyCommand = new TerraformAuthorizationCommandInitializer(
+        let destroyCommand = new OpenTofuAuthorizationCommandInitializer(
             "destroy",
             tasks.getInput("workingDirectory"),
             tasks.getInput(serviceName, true),
             additionalArgs
         );
 
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(destroyCommand);
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(destroyCommand);
         await this.handleProvider(destroyCommand);
         this.warnIfMultipleProviders();
 
-        return await terraformTool.execAsync(<IExecOptions> {
+        return await opentofuTool.execAsync(<IExecOptions> {
             cwd: destroyCommand.workingDirectory
         });
     };
 
     public async validate(): Promise<number> {
-        let validateCommand = new TerraformBaseCommandInitializer(
+        let validateCommand = new OpenTofuAuthorizationCommandInitializer(
             "validate",
             tasks.getInput("workingDirectory"),
             tasks.getInput("commandOptions")
         );
 
-        let terraformTool;
-        terraformTool = this.terraformToolHandler.createToolRunner(validateCommand);
-        
-        return await terraformTool.execAsync(<IExecOptions>{
+        let opentofuTool;
+        opentofuTool = this.terraformToolHandler.createToolRunner(validateCommand);
+
+        return await opentofuTool.execAsync(<IExecOptions>{
             cwd: validateCommand.workingDirectory
         });
     }

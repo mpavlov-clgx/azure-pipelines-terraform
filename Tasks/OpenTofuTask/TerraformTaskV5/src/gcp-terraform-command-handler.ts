@@ -1,11 +1,11 @@
 import tasks = require('azure-pipelines-task-lib/task');
 import {ToolRunner} from 'azure-pipelines-task-lib/toolrunner';
-import {TerraformAuthorizationCommandInitializer} from './terraform-commands';
-import {BaseTerraformCommandHandler} from './base-terraform-command-handler';
+import {OpenTofuAuthorizationCommandInitializer} from './opentofu-commands';
+import {BaseOpenTofuCommandHandler} from './base-terraform-command-handler';
 import path = require('path');
 import * as uuidV4 from 'uuid/v4';
 
-export class TerraformCommandHandlerGCP extends BaseTerraformCommandHandler {
+export class OpenTofuCommandHandlerGCP extends BaseOpenTofuCommandHandler {
     constructor() {
         super();
         this.providerName = "gcp";
@@ -35,18 +35,18 @@ export class TerraformCommandHandlerGCP extends BaseTerraformCommandHandler {
         this.backendConfig.set('credentials', jsonKeyFilePath);
     }
 
-    public async handleBackend(terraformToolRunner: ToolRunner) : Promise<void> {
+    public async handleBackend(opentofuToolRunner: ToolRunner) : Promise<void> {
         tasks.debug('Setting up backend GCP.');
         let backendServiceName = tasks.getInput("backendServiceGCP", true);
         this.setupBackend(backendServiceName);
 
         for (let [key, value] of this.backendConfig.entries()) {
-            terraformToolRunner.arg(`-backend-config=${key}=${value}`);
+            opentofuToolRunner.arg(`-backend-config=${key}=${value}`);
         }
         tasks.debug('Finished setting up backend GCP.');
     }
 
-    public async handleProvider(command: TerraformAuthorizationCommandInitializer) : Promise<void> {
+    public async handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void> {
         if (command.serviceProvidername) {
             let jsonKeyFilePath = this.getJsonKeyFilePath(command.serviceProvidername);
 

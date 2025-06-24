@@ -1,6 +1,6 @@
 import tasks = require('azure-pipelines-task-lib/task');
 import {ToolRunner} from 'azure-pipelines-task-lib/toolrunner';
-import {TerraformAuthorizationCommandInitializer} from './terraform-commands';
+import {TerraformAuthorizationCommandInitializer} from './opentofu-commands';
 import {BaseTerraformCommandHandler} from './base-terraform-command-handler';
 import path = require('path');
 import * as uuidV4 from 'uuid/v4';

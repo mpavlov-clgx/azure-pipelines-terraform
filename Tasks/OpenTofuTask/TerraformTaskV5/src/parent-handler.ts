@@ -1,6 +1,6 @@
-import { BaseTerraformCommandHandler } from './base-terraform-command-handler';
-import { TerraformCommandHandlerAzureRM } from './azure-terraform-command-handler';
-import { TerraformCommandHandlerAWS } from './aws-terraform-command-handler';
+import { BaseOpentofuCommandHandler } from './base-terraform-command-handler';
+import { TerraformCommandHandlerAzureRM } from './azure-opentofu-command-handler';
+import { TerraformCommandHandlerAWS } from './aws-opentofu-command-handler';
 import { TerraformCommandHandlerGCP } from './gcp-terraform-command-handler';
 import { TerraformCommandHandlerOCI } from './oci-terraform-command-handler';
 
@@ -11,7 +11,7 @@ export interface IParentCommandHandler {
 export class ParentCommandHandler implements IParentCommandHandler {
     public async execute(providerName: string, command: string): Promise<number> {
         // Create corresponding command handler according to provider name
-        let provider: BaseTerraformCommandHandler;
+        let provider: BaseOpentofuCommandHandler;
 
         switch(providerName) {
             case "azurerm":
