@@ -17,12 +17,12 @@ export class OpenTofuCommandHandlerAWS extends BaseOpenTofuCommandHandler {
         this.backendConfig.set('secret_key', tasks.getEndpointAuthorizationParameter(backendServiceName, "password", true));
     }
 
-    public async handleBackend(terraformToolRunner: ToolRunner) : Promise<void> {
+    public async handleBackend(opentofuToolRunner: ToolRunner) : Promise<void> {
         let backendServiceName = tasks.getInput("backendServiceAWS", true);
         this.setupBackend(backendServiceName);
 
         for (let [key, value] of this.backendConfig.entries()) {
-            terraformToolRunner.arg(`-backend-config=${key}=${value}`);
+            opentofuToolRunner.arg(`-backend-config=${key}=${value}`);
         }
     }
 

@@ -9,15 +9,15 @@ const del = require('del');
 
 export abstract class BaseOpenTofuCommandHandler {
     providerName: string;
-    terraformToolHandler: IOpenTofuToolHandler;
+    opentofuToolHandler: IOpenTofuToolHandler;
     backendConfig: Map<string, string>;
 
-    abstract handleBackend(terraformToolRunner: ToolRunner) : Promise<void>;
+    abstract handleBackend(opentofuToolRunner: ToolRunner) : Promise<void>;
     abstract handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void>;
 
     constructor() {
         this.providerName = "";
-        this.terraformToolHandler = new OpenTofuToolHandler(tasks);
+        this.opentofuToolHandler = new OpenTofuToolHandler(tasks);
         this.backendConfig = new Map<string, string>();
     }
 
@@ -82,7 +82,7 @@ export abstract class BaseOpenTofuCommandHandler {
 
         let opentofuTool;
 
-        opentofuTool = this.terraformToolHandler.createToolRunner(initCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(initCommand);
         await this.handleBackend(opentofuTool);
 
         return await opentofuTool.execAsync(<IExecOptions> {
@@ -107,7 +107,7 @@ export abstract class BaseOpenTofuCommandHandler {
             cmd
         );
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(showCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(showCommand);
         await this.handleProvider(showCommand);
         
         if(outputTo == "console"){
@@ -137,7 +137,7 @@ export abstract class BaseOpenTofuCommandHandler {
         );
 
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(outputCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(outputCommand);
         await this.handleProvider(outputCommand);
 
         const jsonOutputVariablesFilePath = path.resolve(`output-${uuidV4()}.json`);
@@ -162,7 +162,7 @@ export abstract class BaseOpenTofuCommandHandler {
         );
 
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(planCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(planCommand);
         await this.handleProvider(planCommand);
         this.warnIfMultipleProviders();
 
@@ -172,7 +172,7 @@ export abstract class BaseOpenTofuCommandHandler {
         });
 
         if (result !== 0 && result !== 2) {
-            throw new Error(tasks.loc("TerraformPlanFailed", result));
+            throw new Error(tasks.loc("OpenTofuPlanFailed", result));
         }
         tasks.setVariable('changesPresent', (result === 2).toString(), false, true);
         return result;
@@ -189,7 +189,7 @@ export abstract class BaseOpenTofuCommandHandler {
         );
 
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(customCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(customCommand);
         await this.handleProvider(customCommand);
 
         if(outputTo == "console"){
@@ -223,7 +223,7 @@ export abstract class BaseOpenTofuCommandHandler {
             additionalArgs
         );
 
-        opentofuTool = this.terraformToolHandler.createToolRunner(applyCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(applyCommand);
         await this.handleProvider(applyCommand);
         this.warnIfMultipleProviders();
 
@@ -250,7 +250,7 @@ export abstract class BaseOpenTofuCommandHandler {
         );
 
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(destroyCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(destroyCommand);
         await this.handleProvider(destroyCommand);
         this.warnIfMultipleProviders();
 
@@ -267,7 +267,7 @@ export abstract class BaseOpenTofuCommandHandler {
         );
 
         let opentofuTool;
-        opentofuTool = this.terraformToolHandler.createToolRunner(validateCommand);
+        opentofuTool = this.opentofuToolHandler.createToolRunner(validateCommand);
 
         return await opentofuTool.execAsync(<IExecOptions>{
             cwd: validateCommand.workingDirectory

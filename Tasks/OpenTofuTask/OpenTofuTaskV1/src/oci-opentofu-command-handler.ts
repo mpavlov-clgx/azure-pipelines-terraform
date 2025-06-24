@@ -28,7 +28,7 @@ export class OpenTofuCommandHandlerOCI extends BaseOpenTofuCommandHandler {
 
     private setupBackend(backendServiceName: string) {
         // Unfortunately this seems not to work with OCI provider for the tf statefile
-        // https://developer.hashicorp.com/terraform/language/settings/backends/configuration#command-line-key-value-pairs
+        // https://developer.hashicorp.com/opentofu/language/settings/backends/configuration#command-line-key-value-pairs
         //this.backendConfig.set('address', tasks.getInput("PAR url", true));
         //this.backendConfig.set('path', tasks.getInput("PAR path", true));
         //this.backendConfig.set('scheme', 'https');

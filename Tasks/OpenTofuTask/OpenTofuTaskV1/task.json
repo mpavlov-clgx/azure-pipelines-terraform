@@ -1,8 +1,8 @@
 {
     "id": "FE504ACC-6115-40CB-89FF-191386B5E7BF",
-    "name": "TerraformTask",
-    "friendlyName": "Terraform",
-    "description": "Execute terraform commands to manage resources on Microsoft Azure, Amazon Web Services(AWS), Google Cloud Platform(GCP) and Oracle Cloud Infrastructure(OCI).",
+    "name": "OpenTofuTask",
+    "friendlyName": "OpenTofu",
+    "description": "Execute opentofu commands to manage resources on Microsoft Azure, Amazon Web Services(AWS), Google Cloud Platform(GCP) and Oracle Cloud Infrastructure(OCI).",
     "author": "Microsoft Corporation",
     "helpMarkDown": "[Learn more about this task](https://aka.ms/devlabs/ado/tf/task/v5)",
     "category": "Deploy",
@@ -17,7 +17,7 @@
         "Minor": "257",
         "Patch": "1"
     },
-    "instanceNameFormat": "Terraform : $(provider)",
+    "instanceNameFormat": "OpenTofu : $(provider)",
     "execution": {
         "Node10": {
             "target": "src/index.js"
@@ -68,7 +68,7 @@
             "label": "Provider",
             "defaultValue": "azurerm",
             "required": true,
-            "helpMarkDown": "The name of the provider used in the terraform configuration files.<br>Only one provider must be specified in the terraform configuration files in the below specified configuration directory.",
+            "helpMarkDown": "The name of the provider used in the opentofu configuration files.<br>Only one provider must be specified in the opentofu configuration files in the below specified configuration directory.",
             "options": {
                 "azurerm": "azurerm",
                 "aws": "aws",
@@ -85,7 +85,7 @@
             "label": "Command",
             "defaultValue": "init",
             "required": true,
-            "helpMarkDown": "The terraform command to execute.",
+            "helpMarkDown": "The opentofu command to execute.",
             "options": {
                 "init": "init",
                 "validate": "validate",
@@ -105,14 +105,14 @@
             "type": "filePath",
             "label": "Configuration directory",
             "defaultValue": "$(System.DefaultWorkingDirectory)",
-            "helpMarkDown": "Directory containing the Terraform configuration files. The default value is $(System.DefaultWorkingDirectory)",
+            "helpMarkDown": "Directory containing the OpenTofu configuration files. The default value is $(System.DefaultWorkingDirectory)",
             "required": false
         },
         {
             "name": "commandOptions",
             "type": "string",
             "label": "Additional command arguments",
-            "helpMarkDown": "Any additional arguments for the selected command such as '-option=value' or '-flag'. Multiple options can also be provided delimited by spaces.<br><br>Examples:<br>-out=tfplan (for terraform plan)<br>tfplan -auto-approve (for terraform apply)",
+            "helpMarkDown": "Any additional arguments for the selected command such as '-option=value' or '-flag'. Multiple options can also be provided delimited by spaces.<br><br>Examples:<br>-out=tfplan (for opentofu plan)<br>tfplan -auto-approve (for opentofu apply)",
             "required": false
         },
         {
@@ -133,7 +133,7 @@
             "type": "string",
             "label": "Custom command",
             "visibleRule": "command = custom",
-            "helpMarkDown": "The custom terraform command to execute.",
+            "helpMarkDown": "The custom opentofu command to execute.",
             "required": true
         },
         {
@@ -236,7 +236,7 @@
             "type": "connectedService:AzureRM",
             "label": "Azure Backend Service Connection",
             "required": true,
-            "helpMarkDown": "Select an Azure Resource Manager Service Connection for the terraform azurerm backend configuration",
+            "helpMarkDown": "Select an Azure Resource Manager Service Connection for the opentofu azurerm backend configuration",
             "groupName": "backendAzureRm"
         },
         {
@@ -277,7 +277,7 @@
             "type": "string",
             "label": "Container",
             "required": true,
-            "helpMarkDown": "The name of the Azure Blob container in which to store the Terraform remote state file.",
+            "helpMarkDown": "The name of the Azure Blob container in which to store the OpenTofu remote state file.",
             "groupName": "backendAzureRm",
             "properties": {
                 "EditableOptions": "True"
@@ -288,7 +288,7 @@
             "type": "string",
             "label": "Key",
             "required": true,
-            "helpMarkDown": "The path to the Terraform remote state file inside the container.<br>For example, if you want to store the state file, named terraform.tfstate, inside a folder, named tf, then give the input 'tf/terraform.tfstate'",
+            "helpMarkDown": "The path to the OpenTofu remote state file inside the container.<br>For example, if you want to store the state file, named opentofu.tfstate, inside a folder, named tf, then give the input 'tf/opentofu.tfstate'",
             "groupName": "backendAzureRm"
         },
         {
@@ -296,7 +296,7 @@
             "type": "connectedService:AWSServiceEndpoint",
             "label": "Amazon Web Services connection",
             "required": true,
-            "helpMarkDown": "Amazon Web Services connection for the terraform backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup an Amazon Web Services service connection using the 'Add' or 'Manage' button.",
+            "helpMarkDown": "Amazon Web Services connection for the opentofu backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup an Amazon Web Services service connection using the 'Add' or 'Manage' button.",
             "groupName": "backendAWS"
         },
         {
@@ -304,7 +304,7 @@
             "type": "pickList",
             "label": "Bucket",
             "required": true,
-            "helpMarkDown": "The name of the Amazon Simple Storage Service(S3) bucket for storing the Terraform remote state file.<br><br>NOTE: The region of this bucket (e.g. us-east-1) must be specified in the AWS service connection that you must set up. To set up an AWS service connection, click on the 'Help(i)' button of the above input named 'Amazon Web Services connection'",
+            "helpMarkDown": "The name of the Amazon Simple Storage Service(S3) bucket for storing the OpenTofu remote state file.<br><br>NOTE: The region of this bucket (e.g. us-east-1) must be specified in the AWS service connection that you must set up. To set up an AWS service connection, click on the 'Help(i)' button of the above input named 'Amazon Web Services connection'",
             "groupName": "backendAWS",
             "properties": {
                 "EditableOptions": "True"
@@ -315,7 +315,7 @@
             "type": "string",
             "label": "Key",
             "required": true,
-            "helpMarkDown": "The path to the state file inside the Amazon S3 bucket.<br>For example, if you want to store the state file, named terraform.tfstate, inside a folder, named tf, then give the input 'tf/terraform.tfstate'.",
+            "helpMarkDown": "The path to the state file inside the Amazon S3 bucket.<br>For example, if you want to store the state file, named opentofu.tfstate, inside a folder, named tf, then give the input 'tf/opentofu.tfstate'.",
             "groupName": "backendAWS"
         },
         {
@@ -323,7 +323,7 @@
             "type": "connectedService:GoogleCloudServiceEndpoint",
             "label": "Google Cloud Platform connection",
             "required": true,
-            "helpMarkDown": "Google Cloud Platform connection for the terraform backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup a Google Cloud Platform service connection using the 'Add' or 'Manage' button.",
+            "helpMarkDown": "Google Cloud Platform connection for the opentofu backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup a Google Cloud Platform service connection using the 'Add' or 'Manage' button.",
             "groupName": "backendGCP"
         },
         {
@@ -331,7 +331,7 @@
             "type": "pickList",
             "label": "Bucket",
             "required": true,
-            "helpMarkDown": "The name of the GCP storage bucket for storing the Terraform remote state file.",
+            "helpMarkDown": "The name of the GCP storage bucket for storing the OpenTofu remote state file.",
             "groupName": "backendGCP",
             "properties": {
                 "EditableOptions": "True"
@@ -342,7 +342,7 @@
             "type": "string",
             "label": "Prefix of state file",
             "required": false,
-            "helpMarkDown": "The relative path to the state file inside the GCP bucket. For example, if you give the input as 'terraform', then the state file, named default.tfstate, will be stored inside an object called terraform.",
+            "helpMarkDown": "The relative path to the state file inside the GCP bucket. For example, if you give the input as 'opentofu', then the state file, named default.tfstate, will be stored inside an object called opentofu.",
             "groupName": "backendGCP"
         },
         {
@@ -350,24 +350,24 @@
             "type": "connectedService:OracleCloudInfrastructureServiceEndpoint",
             "label": "Oracle Cloud Infrastructure connection",
             "required": true,
-            "helpMarkDown": "Oracle Cloud Infrastructure connection for the terraform backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup a Oracle Cloud Platform service connection using the 'Add' or 'Manage' button.",
+            "helpMarkDown": "Oracle Cloud Infrastructure connection for the opentofu backend configuration.<br><br>Note: If your connection is not listed or if you want to use an existing connection, you can setup a Oracle Cloud Platform service connection using the 'Add' or 'Manage' button.",
             "groupName": "backendOCI"
         },
         {
             "name": "backendOCIPar",
             "type": "string",
-            "label": "PAR for Terraform remote state file",
+            "label": "PAR for OpenTofu remote state file",
             "required": false,
-            "helpMarkDown": "The OCI object storage PAR configuration for the Terraform remote state file (optional)",
+            "helpMarkDown": "The OCI object storage PAR configuration for the OpenTofu remote state file (optional)",
             "groupName": "backendOCI"
         },
         {
             "name": "backendOCIConfigGenerate",
             "type": "pickList",
-            "label": "Generate the Terraform remote state file config (Use Yes when not included in TF files)",
+            "label": "Generate the OpenTofu remote state file config (Use Yes when not included in TF files)",
             "required": true,
             "defaultValue": "yes",
-            "helpMarkDown": "Generates the Terraform remote state file config, select Yes when not included in TF files, othwerwise No.",
+            "helpMarkDown": "Generates the OpenTofu remote state file config, select Yes when not included in TF files, othwerwise No.",
             "groupName": "backendOCI",
             "options": {
                 "yes": "yes",
@@ -390,18 +390,18 @@
     "outputVariables": [
         {
             "name": "jsonPlanFilePath",
-            "description": "The location of the terraform plan file in JSON format that was created. This file can be used by tasks which are written for tools such as [Open Policy Agent](https://www.openpolicyagent.org/docs/latest/terraform/)<br><br>Note: This variable will only be set if 'command' input is set to 'plan'."
+            "description": "The location of the opentofu plan file in JSON format that was created. This file can be used by tasks which are written for tools such as [Open Policy Agent](https://www.openpolicyagent.org/docs/latest/opentofu/)<br><br>Note: This variable will only be set if 'command' input is set to 'plan'."
         },
         {
             "name": "jsonOutputVariablesPath",
-            "description": "The location of the JSON file which contains the output variables set by the user in the terraform config files.<br><br>Note: This variable will only be set if 'command' input is set to 'output'."
+            "description": "The location of the JSON file which contains the output variables set by the user in the opentofu config files.<br><br>Note: This variable will only be set if 'command' input is set to 'output'."
         },
         {
             "name": "changesPresent",
-            "description": "A boolean indicating if the terraform plan found any changes to apply."
+            "description": "A boolean indicating if the opentofu plan found any changes to apply."
         }
     ],
     "messages": {
-        "TerraformToolNotFound": "Failed to find terraform tool in paths"
+        "OpenTofuToolNotFound": "Failed to find opentofu tool in paths"
     }
 }
