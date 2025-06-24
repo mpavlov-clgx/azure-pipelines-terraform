@@ -4,31 +4,31 @@ import { ToolRunner } from 'azure-pipelines-task-lib/toolrunner';
 import path = require('path');
 import * as installer from './terraform-installer';
 
-async function configureTerraform() {
-    let inputVersion = tasks.getInput("terraformVersion", true);
-    let terraformPath = await installer.downloadTerraform(inputVersion);
+async function configureOpenTofu() {
+    let inputVersion = tasks.getInput("opentofuVersion", true);
+    let openTofuPath = await installer.downloadOpenTofu(inputVersion);
     let envPath = process.env['PATH'];
 
     // Prepend the tools path. Instructs the agent to prepend for future tasks
-    if (envPath && !envPath.startsWith(path.dirname(terraformPath))) {
-        tools.prependPath(path.dirname(terraformPath));
+    if (envPath && !envPath.startsWith(path.dirname(openTofuPath))) {
+        tools.prependPath(path.dirname(openTofuPath));
     }
 }
 
-async function verifyTerraform() {
-    console.log(tasks.loc("VerifyTerraformInstallation"));
-    let terraformPath = tasks.which("terraform", true);
-    let terraformTool : ToolRunner = tasks.tool(terraformPath);
-    terraformTool.arg("version");
-    return terraformTool.exec();
+async function verifyOpenTofu() {
+    console.log(tasks.loc("VerifyOpenTofuInstallation"));
+    let openTofuPath = tasks.which("tofu", true);
+    let openToFuTool : ToolRunner = tasks.tool(openTofuPath);
+    openToFuTool.arg("version");
+    return openToFuTool.exec();
 }
 
 async function run() {
     tasks.setResourcePath(path.join(__dirname, '..', 'task.json'));
 
     try {
-        await configureTerraform();
-        await verifyTerraform();
+        await configureOpenTofu();
+        await verifyOpenTofu();
         tasks.setResult(tasks.TaskResult.Succeeded, "");
     } catch (error) {
         tasks.setResult(tasks.TaskResult.Failed, error);

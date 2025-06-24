@@ -1,9 +1,9 @@
 {
     "id": "a4789e5d-f6e8-431f-add9-379d640a883c",
-    "name": "TerraformInstaller",
-    "friendlyName": "Terraform tool installer",
-    "description": "Find in cache or download a specific version of Terraform and prepend it to the PATH",
-    "author": "Microsoft Corporation",
+    "name": "OpenTofuInstaller",
+    "friendlyName": "OpenTofu tool installer",
+    "description": "Find in cache or download a specific version of OpenTofu and prepend it to the PATH",
+    "author": "Cotality UK",
     "helpMarkDown": "[Learn more about this task](https://aka.ms/AAf1a0p)",
     "category": "Tool",
     "visibility": [
@@ -16,15 +16,15 @@
         "Minor": "216",
         "Patch": "0"
     },
-    "instanceNameFormat": "Install Terraform $(terraformVersion)",
+    "instanceNameFormat": "Install OpenTofu $(openTofuVersion)",
     "inputs": [
         {
-            "name": "terraformVersion",
+            "name": "openTofuVersion",
             "type": "string",
             "label": "Version",
             "defaultValue": "latest",
             "required": true,
-            "helpMarkDown": "The version of Terraform which should be installed on the agent if not already present"
+            "helpMarkDown": "The version of OpenTofu which should be installed on the agent if not already present"
         }
     ],
     "execution": {
@@ -38,18 +38,18 @@
     },
     "outputVariables": [
         {
-            "name": "terraformLocation",
-            "description": "The location of the terraform binary that was installed on the agent."
+            "name": "openTofuLocation",
+            "description": "The location of the OpenTofu binary that was installed on the agent."
         }
     ],
     "messages": {
-        "VerifyTerraformInstallation": "Verifying Terraform installation...",
+        "VerifyOpenTofuInstallation": "Verifying OpenTofu installation...",
         "InputVersionNotValidSemanticVersion": "Input version %s is not a valid semantic version",
-        "TerraformNotFoundInFolder": "Terraform executable not found in path %s",
+        "OpenTofuNotFoundInFolder": "OpenTofu executable not found in path %s",
         "OperatingSystemNotSupported": "Operating system %s is not supported",
         "ArchitectureNotSupported": "Architecture %s is not supported",
-        "TerraformDownloadFailed": "Failed to download Terraform from url %s. Error %s",
-        "TerraformVersionNotFound": "Unable to get latest version: %s defaulting to 1.0.8",
-        "GettingLatestTerraformVersion": "Getting latest Terraform version."
+        "OpenTofuDownloadFailed": "Failed to download OpenTofu from url %s. Error %s",
+        "OpenTofuVersionNotFound": "Unable to get latest version: %s defaulting to 1.0.8",
+        "GettingLatestOpenTofuVersion": "Getting latest OpenTofu version."
     }
 }

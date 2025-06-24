@@ -1,6 +1,6 @@
 {
   "id": "a4789e5d-f6e8-431f-add9-379d640a883c",
-  "name": "TerraformInstaller",
+  "name": "OpenTofuInstaller",
   "friendlyName": "ms-resource:loc.friendlyName",
   "description": "ms-resource:loc.description",
   "author": "Microsoft Corporation",
@@ -19,12 +19,12 @@
   "instanceNameFormat": "ms-resource:loc.instanceNameFormat",
   "inputs": [
     {
-      "name": "terraformVersion",
+      "name": "opentofuVersion",
       "type": "string",
-      "label": "ms-resource:loc.input.label.terraformVersion",
+      "label": "ms-resource:loc.input.label.opentofuVersion",
       "defaultValue": "latest",
       "required": true,
-      "helpMarkDown": "ms-resource:loc.input.help.terraformVersion"
+      "helpMarkDown": "ms-resource:loc.input.help.opentofuVersion"
     }
   ],
   "execution": {
@@ -38,18 +38,18 @@
   },
   "outputVariables": [
     {
-      "name": "terraformLocation",
-      "description": "The location of the terraform binary that was installed on the agent."
+      "name": "openTofuLocation",
+      "description": "The location of the OpenTofu binary that was installed on the agent."
     }
   ],
   "messages": {
-    "VerifyTerraformInstallation": "ms-resource:loc.messages.VerifyTerraformInstallation",
+    "VerifyOpenTofuInstallation": "ms-resource:loc.messages.VerifyOpenTofuInstallation",
     "InputVersionNotValidSemanticVersion": "ms-resource:loc.messages.InputVersionNotValidSemanticVersion",
-    "TerraformNotFoundInFolder": "ms-resource:loc.messages.TerraformNotFoundInFolder",
+    "OpenTofuNotFoundInFolder": "ms-resource:loc.messages.OpenTofuNotFoundInFolder",
     "OperatingSystemNotSupported": "ms-resource:loc.messages.OperatingSystemNotSupported",
     "ArchitectureNotSupported": "ms-resource:loc.messages.ArchitectureNotSupported",
-    "TerraformDownloadFailed": "ms-resource:loc.messages.TerraformDownloadFailed",
-    "TerraformVersionNotFound": "ms-resource:loc.messages.TerraformVersionNotFound",
-    "GettingLatestTerraformVersion": "ms-resource:loc.messages.GettingLatestTerraformVersion"
+    "OpenTofuDownloadFailed": "ms-resource:loc.messages.OpenTofuDownloadFailed",
+    "OpenTofuVersionNotFound": "ms-resource:loc.messages.OpenTofuVersionNotFound",
+    "GettingLatestOpenTofuVersion": "ms-resource:loc.messages.GettingLatestOpenTofuVersion"
   }
 }

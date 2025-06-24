@@ -8,39 +8,54 @@ const uuidV4 = require('uuid/v4');
 const fetch = require('node-fetch');
 const HttpsProxyAgent = require('https-proxy-agent');
 
-const terraformToolName = "terraform";
+const opentofuToolName = "tofu";
 const isWindows = os.type().match(/^Win/);
 const proxy = tasks.getHttpProxyConfiguration();
-export async function downloadTerraform(inputVersion: string): Promise<string> {
+
+const repo = 'opentofu/opentofu';
+const url  = `https://api.github.com/repos/${repo}/releases/latest`;
+
+export async function downloadOpenTofu(inputVersion: string): Promise<string> {
     var latestVersion: string = "";
     if(inputVersion.toLowerCase() === 'latest') {
-        console.log(tasks.loc("GettingLatestTerraformVersion"));
+        console.log(tasks.loc("GettingLatestOpenTofuVersion"));
         if(proxy == null){
-            await fetch('https://checkpoint-api.hashicorp.com/v1/check/terraform')
-            .then((response: { json: () => any; }) => response.json())
-            .then((data: { [x: string]: any; }) => {
-                latestVersion = data.current_version;
+            await fetch(url, {
+                headers: {
+                    'Accept': 'application/vnd.github+json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`GitHub responded ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                latestVersion = tools.cleanVersion(data.tag_name.replace('v', ''));
             })
             .catch((exception: any) => {
-                console.warn(tasks.loc("TerraformVersionNotFound"));
+                console.warn(tasks.loc("OpenTofuVersionNotFound"));
 
-                latestVersion = '1.9.8';
+                latestVersion = '1.9.0';
             })
         }
         else
         {
-
             var proxyUrl = proxy.proxyUsername !="" ? proxy.proxyUrl.split("://")[0] + '://' + proxy.proxyUsername + ':' + proxy.proxyPassword + '@' + proxy.proxyUrl.split("://")[1]:proxy.proxyUrl;
             var proxyAgent = new HttpsProxyAgent(proxyUrl);
-            await fetch('https://checkpoint-api.hashicorp.com/v1/check/terraform', { agent: proxyAgent})
-            .then((response: { json: () => any; }) => response.json())
-            .then((data: { [x: string]: any; }) => {
-                latestVersion = data.current_version;
+              await fetch(url, {agent: proxyAgent})
+            .then(response => {
+                if (!response.ok) throw new Error(`GitHub responded ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                latestVersion = tools.cleanVersion(data.tag_name.replace('v', ''));
             })
             .catch((exception: any) => {
-                console.warn(tasks.loc("TerraformVersionNotFound"));
-                latestVersion = '1.9.8';
+                console.warn(tasks.loc("OpenTofuVersionNotFound"));
+
+                latestVersion = '1.9.0';
             })
+
         }
     }
     var version = latestVersion != "" ? tools.cleanVersion(latestVersion) : tools.cleanVersion(inputVersion);
@@ -49,37 +64,37 @@ export async function downloadTerraform(inputVersion: string): Promise<string> {
         throw new Error(tasks.loc("InputVersionNotValidSemanticVersion", inputVersion));
     }
 
-    let cachedToolPath = tools.findLocalTool(terraformToolName, version);
+    let cachedToolPath = tools.findLocalTool(opentofuToolName, version);
     if (!cachedToolPath) {
-        let terraformDownloadUrl = getTerraformDownloadUrl(version);
-        let fileName = `${terraformToolName}-${version}-${uuidV4()}.zip`;
-        let terraformDownloadPath;
+        let openTofDownloadUrl = getOpenTofuDownloadUrl(version);
+        let fileName = `${opentofuToolName}-${version}-${uuidV4()}.zip`;
+        let openTofuDownloadPath;
 
         try {
-            terraformDownloadPath = await tools.downloadTool(terraformDownloadUrl, fileName);
+            openTofuDownloadPath = await tools.downloadTool(openTofDownloadUrl, fileName);
         } catch (exception) {
-            throw new Error(tasks.loc("TerraformDownloadFailed", terraformDownloadUrl, exception));
+            throw new Error(tasks.loc("OpenTofuDownloadFailed", openTofDownloadUrl, exception));
         }
 
-        let terraformUnzippedPath = await tools.extractZip(terraformDownloadPath);
-        cachedToolPath = await tools.cacheDir(terraformUnzippedPath, terraformToolName, version);
+        let openTofuUnzippedPath = await tools.extractZip(openTofuDownloadPath);
+        cachedToolPath = await tools.cacheDir(openTofuUnzippedPath, opentofuToolName, version);
     }
 
-    let terraformPath = findTerraformExecutable(cachedToolPath);
-    if (!terraformPath) {
-        throw new Error(tasks.loc("TerraformNotFoundInFolder", cachedToolPath));
+    let openTofuPath = findOpenTofuExecutable(cachedToolPath);
+    if (!openTofuPath) {
+        throw new Error(tasks.loc("OpenTofuNotFoundInFolder", cachedToolPath));
     }
 
     if (!isWindows) {
-        fs.chmodSync(terraformPath, "777");
+        fs.chmodSync(openTofuPath, "777");
     }
 
-    tasks.setVariable('terraformLocation', terraformPath);
+    tasks.setVariable('openTofuLocation', openTofuPath);
 
-    return terraformPath;
+    return openTofuPath;
 }
 
-function getTerraformDownloadUrl(version: string): string {
+function getOpenTofuDownloadUrl(version: string): string {
     let platform: string;
     let architecture: string;
 
@@ -121,13 +136,13 @@ function getTerraformDownloadUrl(version: string): string {
             throw new Error(tasks.loc("ArchitectureNotSupported", os.arch()));
     }
 
-    return `https://releases.hashicorp.com/terraform/${version}/terraform_${version}_${platform}_${architecture}.zip`;
+    return `https://github.com/opentofu/releases/download/v${version}/tofu${version}_${platform}_${architecture}.zip`;
 }
 
-function findTerraformExecutable(rootFolder: string): string {
-    let terraformPath = path.join(rootFolder, terraformToolName + getExecutableExtension());
+function findOpenTofuExecutable(rootFolder: string): string {
+    let opentofuPath = path.join(rootFolder, opentofuToolName + getExecutableExtension());
     var allPaths = tasks.find(rootFolder);
-    var matchingResultFiles = tasks.match(allPaths, terraformPath, rootFolder);
+    var matchingResultFiles = tasks.match(allPaths, opentofuPath, rootFolder);
     return matchingResultFiles[0];
 }
 
