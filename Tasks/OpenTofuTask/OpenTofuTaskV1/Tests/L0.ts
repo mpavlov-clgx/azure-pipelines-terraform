@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as ttm from 'azure-pipelines-task-lib/mock-test';
 import * as path from 'path';
 
-describe('Terraform Test Suite', function () {
+describe('OpenTofu Test Suite', function () {
 
     before(() => {
         //NOTE: This is here because when debugging in VSCode this is populated and the spawn() method in the testing framework which starts a new NodeJS process does not handle the path with spaces that is set in it.
@@ -11,7 +11,7 @@ describe('Terraform Test Suite', function () {
 
     after(() => {});
 
-    /* terraform init tests */
+    /* opentofu init tests */
 
     function runValidations(validator: () => void, tr: ttm.MockTestRunner) {
         try {
@@ -232,7 +232,7 @@ describe('Terraform Test Suite', function () {
             assert(tr.invokedToolCount === 1, 'tool should have been invoked one time. actual: ' + tr.invokedToolCount);
             assert(tr.errorIssues.length === 1, 'should have one error');
             assert(tr.warningIssues.length === 1, 'should have 1 warning');
-            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that Terraform can determine which modules and providers need to be installed.'), 'Should have shown error message');
+            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that OpenTofu can determine which modules and providers need to be installed.'), 'Should have shown error message');
         }, tr);
     });
 
@@ -292,7 +292,7 @@ describe('Terraform Test Suite', function () {
             assert(tr.invokedToolCount === 1, 'tool should have been invoked one time. actual: ' + tr.invokedToolCount);
             assert(tr.errorIssues.length === 1, 'should have one error');
             assert(tr.warningIssues.length === 0, 'should have no warnings');
-            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that Terraform can determine which modules and providers need to be installed.'), 'Should have shown error message');
+            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that OpenTofu can determine which modules and providers need to be installed.'), 'Should have shown error message');
         }, tr);
     });
 
@@ -352,11 +352,11 @@ describe('Terraform Test Suite', function () {
             assert(tr.invokedToolCount === 1, 'tool should have been invoked one time. actual: ' + tr.invokedToolCount);
             assert(tr.errorIssues.length === 1, 'should have one error');
             assert(tr.warningIssues.length === 0, 'should have no warnings');
-            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that Terraform can determine which modules and providers need to be installed.'), 'Should have shown error message');
+            assert(tr.stdOutContained('There are some problems with the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that OpenTofu can determine which modules and providers need to be installed.'), 'Should have shown error message');
         }, tr);
     });
 
-    /* terraform validate tests */
+    /* opentofu validate tests */
 
     it('azure validate should succeed with no additional args', async () => {
         let tp = path.join(__dirname, './ValidateTests/Azure/AzureValidateSuccessNoAdditionalArgs.js');
@@ -538,7 +538,7 @@ describe('Terraform Test Suite', function () {
         }, tr);
     });
 
-    /* terraform plan tests */
+    /* opentofu plan tests */
 
     it('azure plan should succeed with no additional args', async () => {
         let tp = path.join(__dirname, './PlanTests/Azure/AzurePlanSuccessNoAdditionalArgs.js');
@@ -720,7 +720,7 @@ describe('Terraform Test Suite', function () {
         }, tr);
     });
 
-    /* terraform apply tests */
+    /* opentofu apply tests */
 
     it('azure apply should succeed with no additional args', async () => {
         let tp = path.join(__dirname, './ApplyTests/Azure/AzureApplySuccessNoAdditionalArgs.js');
@@ -977,7 +977,7 @@ describe('Terraform Test Suite', function () {
         }, tr);
     });
 
-    /* terraform destroy tests */
+    /* opentofu destroy tests */
 
     it('azure destroy should succeed with no additional args', async () => {
         let tp = path.join(__dirname, './DestroyTests/Azure/AzureDestroySuccessNoAdditionalArgs.js');
@@ -1190,7 +1190,7 @@ describe('Terraform Test Suite', function () {
         }, tr);
     });
 
-    /* test for compareVersions method of BaseTerraformCommandHandler class */
+    /* test for compareVersions method of BaseOpenTofuCommandHandler class */
 
     it('compareVersions should compare two versions correctly', async () => {
         let tp = path.join(__dirname, './L0CompareVersions.js');

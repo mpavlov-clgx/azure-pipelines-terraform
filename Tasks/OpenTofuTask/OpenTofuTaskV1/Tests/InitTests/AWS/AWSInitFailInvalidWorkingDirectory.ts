@@ -21,15 +21,15 @@ process.env['ENDPOINT_AUTH_PARAMETER_AWS_REGION'] = 'DummyRegion';
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform init -no-color -backend-config=bucket=DummyBucket -backend-config=key=DummyKey -backend-config=region=DummyRegion -backend-config=access_key=DummyUsername -backend-config=secret_key=DummyPassword": {
+        "opentofu init -no-color -backend-config=bucket=DummyBucket -backend-config=key=DummyKey -backend-config=region=DummyRegion -backend-config=access_key=DummyUsername -backend-config=secret_key=DummyPassword": {
             "code": 1,
-            "stdout": "There are some problems with the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that Terraform can determine which modules and providers need to be installed."
+            "stdout": "There are some problems with the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that OpenTofu can determine which modules and providers need to be installed."
         }
     }
 }

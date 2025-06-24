@@ -20,17 +20,17 @@ process.env['ENDPOINT_AUTH_PARAMETER_GCP_SCOPE'] = 'DummyScope';
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform providers": {
+        "opentofu providers": {
             "code": 0,
             "stdout": "provider gcp"
         },
-        "terraform plan -no-color -detailed-exitcode": {
+        "opentofu plan -no-color -detailed-exitcode": {
             "code": 0,
             "stdout": "Executed successfully"
         }

@@ -25,13 +25,13 @@ let credentialsFilePath = path.join(__dirname, '..', '..', '..', 'credentials-12
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        [`terraform init -backend-config=bucket=DummyBucket -backend-config=prefix=DummyPrefix -backend-config=credentials=${credentialsFilePath}`]: {
+        [`opentofu init -backend-config=bucket=DummyBucket -backend-config=prefix=DummyPrefix -backend-config=credentials=${credentialsFilePath}`]: {
             "code": 0,
             "stdout": "Executed Successfully"
         }

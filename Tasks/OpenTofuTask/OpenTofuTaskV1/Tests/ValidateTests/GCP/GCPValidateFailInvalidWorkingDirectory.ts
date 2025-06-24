@@ -12,13 +12,13 @@ tr.setInput('commandOptions', '');
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform validate": {
+        "opentofu validate": {
             "code": 1,
             "stdout": "Execution failed: invalid config files"
         }

@@ -12,13 +12,13 @@ tr.setInput('commandOptions', '');
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform providers": {
+        "opentofu providers": {
             "code": 0,
             "stdout": "provider azurerm"
         }

@@ -25,15 +25,15 @@ let credentialsFilePath = path.join(__dirname, '..', '..', '..', 'credentials-12
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        [`terraform init -no-color -backend-config=bucket=DummyBucket -backend-config=prefix=DummyPrefix -backend-config=credentials=${credentialsFilePath}`]: {
+        [`opentofu init -no-color -backend-config=bucket=DummyBucket -backend-config=prefix=DummyPrefix -backend-config=credentials=${credentialsFilePath}`]: {
             "code": 1,
-            "stdout": "There are some problems with the configuration, described below.\n\nThe Terraform configuration must be valid before initialization so that Terraform can determine which modules and providers need to be installed."
+            "stdout": "There are some problems with the configuration, described below.\n\nThe OpenTofu configuration must be valid before initialization so that OpenTofu can determine which modules and providers need to be installed."
         }
     }
 }

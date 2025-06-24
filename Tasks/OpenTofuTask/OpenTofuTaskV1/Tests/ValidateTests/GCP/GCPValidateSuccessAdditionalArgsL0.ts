@@ -1,11 +1,11 @@
-import { TerraformCommandHandlerGCP } from '../../../src/gcp-opentofu-command-handler';
+import { OpenTofuCommandHandlerGCP } from '../../../src/gcp-opentofu-command-handler';
 import tl = require('azure-pipelines-task-lib');
 
-let terraformCommandHandlerGCP: TerraformCommandHandlerGCP = new TerraformCommandHandlerGCP();
+let opentofuCommandHandlerGCP: OpenTofuCommandHandlerGCP = new OpenTofuCommandHandlerGCP();
 
 export async function run() {
     try {
-        const response = await terraformCommandHandlerGCP.validate();
+        const response = await opentofuCommandHandlerGCP.validate();
         if (response === 0) {
             tl.setResult(tl.TaskResult.Succeeded, 'GCPValidateSuccessAdditionalArgsL0 should have succeeded.');
         } else{

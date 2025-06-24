@@ -10,13 +10,13 @@ tr.setInput('command', 'validate');
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform validate": {
+        "opentofu validate": {
             "code": 0,
             "stdout": "Executed Successfully"
         }

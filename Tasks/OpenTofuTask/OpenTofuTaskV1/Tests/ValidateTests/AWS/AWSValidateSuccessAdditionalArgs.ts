@@ -11,13 +11,13 @@ tr.setInput('commandOptions', '-no-color');
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform validate -no-color": {
+        "opentofu validate -no-color": {
             "code": 0,
             "stdout": "Executed Successfully"
         }

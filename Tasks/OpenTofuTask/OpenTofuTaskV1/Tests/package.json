@@ -1,7 +1,7 @@
 {
-  "name": "terraformtask",
+  "name": "opentofutask",
   "version": "1.0.0",
-  "description": "terraform task installer test",
+  "description": "opentofu task installer test",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
