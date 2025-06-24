@@ -18,17 +18,17 @@ process.env['ENDPOINT_AUTH_PARAMETER_AWS_REGION'] = 'DummyRegion';
 
 let a: ma.TaskLibAnswers = <ma.TaskLibAnswers> {
     "which": {
-        "terraform": "terraform"
+        "opentofu": "opentofu"
     },
     "checkPath": {
-        "terraform": true
+        "opentofu": true
     },
     "exec": {
-        "terraform providers": {
+        "opentofu providers": {
             "code": 0,
             "stdout": "provider aws"
         },
-        "terraform apply -auto-approve -no-color": {
+        "opentofu apply -auto-approve -no-color": {
             "code": 0,
             "stdout": "Executed successfully"
         }

@@ -1,9 +1,9 @@
 import tasks = require('azure-pipelines-task-lib/task');
 import {ToolRunner} from 'azure-pipelines-task-lib/toolrunner';
 import {OpenTofuAuthorizationCommandInitializer} from './opentofu-commands';
-import {BaseOpenTofuCommandHandler} from './base-terraform-command-handler';
+import {BaseOpenTofuCommandHandler} from './base-opentofu-command-handler';
 
-export class TerraformCommandHandlerAWS extends BaseOpenTofuCommandHandler {
+export class OpenTofuCommandHandlerAWS extends BaseOpenTofuCommandHandler {
     constructor() {
         super();
         this.providerName = "aws";

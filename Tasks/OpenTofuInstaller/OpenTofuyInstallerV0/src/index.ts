@@ -2,7 +2,7 @@ import tasks = require('azure-pipelines-task-lib/task');
 import tools = require('azure-pipelines-tool-lib/tool');
 import { ToolRunner } from 'azure-pipelines-task-lib/toolrunner';
 import path = require('path');
-import * as installer from './terraform-installer';
+import * as installer from './opentofu-installer';
 
 async function configureOpenTofu() {
     let inputVersion = tasks.getInput("opentofuVersion", true);

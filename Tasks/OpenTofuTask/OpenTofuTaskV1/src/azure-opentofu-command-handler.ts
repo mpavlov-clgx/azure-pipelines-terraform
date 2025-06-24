@@ -1,7 +1,7 @@
 import tasks = require("azure-pipelines-task-lib/task");
 import {ToolRunner} from "azure-pipelines-task-lib/toolrunner";
 import {OpenTofuAuthorizationCommandInitializer} from "./opentofu-commands";
-import {BaseOpenTofuCommandHandler} from "./base-terraform-command-handler";
+import {BaseOpenTofuCommandHandler} from "./base-opentofu-command-handler";
 import {EnvironmentVariableHelper} from "./environment-variables";
 import {generateIdToken} from './id-token-generator';
 

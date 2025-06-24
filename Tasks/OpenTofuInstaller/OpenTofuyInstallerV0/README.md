@@ -1,10 +1,10 @@
-# Terraform tool installer
+# OpenTofu tool installer
 
 
 ### Overview
 
-The Terraform Tool Installer task acquires a specified version of [Terraform](https://www.terraform.io/) from the Internet or the tools cache and prepends it to the PATH of the Azure Pipelines Agent (hosted or private). Use this task to change the version of Terraform used in subsequent tasks like [Terraform](https://aka.ms/AAf0uqr).
-Adding this task before the [Terraform task](https://aka.ms/AAf0uqr) in a build definition ensures you are using that task with the right Terraform version.
+The OpenTofu Tool Installer task acquires a specified version of [OpenTofu](https://opentofu.org/) from the Internet or the tools cache and prepends it to the PATH of the Azure Pipelines Agent (hosted or private). Use this task to change the version of OpenTofu used in subsequent tasks like [OpenTofu](https://aka.ms/AAf0uqr).
+Adding this task before the [OpenTofu task](https://aka.ms/AAf0uqr) in a build definition ensures you are using that task with the right OpenTofu  version.
 
 
 ### Contact Information
@@ -19,28 +19,28 @@ The task can run on the following build agent operating systems:
 - MacOS
 - Linux
 
-** Terraform is already installed on hosted Ubuntu build agents. So, this task may be omitted for these agents unless a different vesrion of Terraform is needed.
+** Opentofu is already installed on hosted Ubuntu build agents. So, this task may be omitted for these agents unless a different vesrion of Opentofu is needed.
 
 ### Parameters of the task
 
 * **Display name\*:** Provide a name to identify the task among others in your pipeline.
 
-* **Version\*:** Specify the keyword 'latest' to get the latest released version or specify exact version of Terraform to install.  
+* **Version\*:** Specify the keyword 'latest' to get the latest released version or specify exact version of Opentofu to install.  
 Example: 
-    To install latest Terraform version use keyword: latest.  To install specific version Ex. 1.0.8, use 1.0.8.
-For getting more details about exact version, refer [this link](https://releases.hashicorp.com/terraform/)
+    To install latest Opentofu version use keyword: latest.  To install specific version Ex. 1.0.8, use 1.0.8.
+For getting more details about exact version, refer [this link](https://releases.hashicorp.com/opentofu/)
 
 
 ### Output Variables
 
-* **Terraform location:** This variable can be used to refer to the location of the terraform binary that was installed on the agent in subsequent tasks.
+* **Opentofu location:** This variable can be used to refer to the location of the opentofu binary that was installed on the agent in subsequent tasks.
 
 ### Example Task Usage
-Below is a basic example usage of a few commands within the TerraformInstaller task.
+Below is a basic example usage of a few commands within the OpentofuInstaller task.
 
 ```yaml
-- task: TerraformInstaller@1
-  displayName: Install Terraform 1.5.7
+- task: OpentofuInstaller@0
+  displayName: Install Opentofu 1.5.7
   inputs:
-    terraformVersion: 1.5.7
+    opentofuVersion: 1.5.7
 ```

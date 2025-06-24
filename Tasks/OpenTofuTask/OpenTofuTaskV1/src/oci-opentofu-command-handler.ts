@@ -1,11 +1,11 @@
 import tasks = require('azure-pipelines-task-lib/task');
 import {ToolRunner} from 'azure-pipelines-task-lib/toolrunner';
-import {TerraformAuthorizationCommandInitializer} from './opentofu-commands';
-import {BaseTerraformCommandHandler} from './base-terraform-command-handler';
+import {OpenTofuAuthorizationCommandInitializer} from './opentofu-commands';
+import {BaseOpenTofuCommandHandler} from './base-opentofu-command-handler';
 import path = require('path');
 import * as uuidV4 from 'uuid/v4';
 
-export class TerraformCommandHandlerOCI extends BaseTerraformCommandHandler {
+export class OpenTofuCommandHandlerOCI extends BaseOpenTofuCommandHandler {
     constructor() {
         super();
         this.providerName = "oci";
@@ -39,7 +39,7 @@ export class TerraformCommandHandlerOCI extends BaseTerraformCommandHandler {
         {
             tasks.debug('Generating backend tf statefile config.');
             var config = "";
-            config = config + "terraform {\n backend \"http\" {\n";
+            config = config + "tofu {\n backend \"http\" {\n";
             config = config + " address = \"" + tasks.getInput("backendOCIPar", true) + "\"\n";
             config = config + " update_method = \"PUT\"\n }\n }\n";
 
@@ -50,16 +50,16 @@ export class TerraformCommandHandlerOCI extends BaseTerraformCommandHandler {
         }
     }
 
-    public async handleBackend(terraformToolRunner: ToolRunner) : Promise<void> {
+    public async handleBackend(opentofuToolRunner: ToolRunner) : Promise<void> {
         let backendServiceName = tasks.getInput("backendServiceOCI", true);
         this.setupBackend(backendServiceName);
 
         for (let [key, value] of this.backendConfig.entries()) {
-            terraformToolRunner.arg(`-backend-config=${key}=${value}`);
+            opentofuToolRunner.arg(`-backend-config=${key}=${value}`);
         }
     }
-    
-    public async handleProvider(command: TerraformAuthorizationCommandInitializer) : Promise<void> {
+
+    public async handleProvider(command: OpenTofuAuthorizationCommandInitializer) : Promise<void> {
         if (command.serviceProvidername) {
             let privateKeyFilePath = this.getPrivateKeyFilePath(tasks.getEndpointDataParameter(command.serviceProvidername, "privateKey", false));
             process.env['TF_VAR_tenancy_ocid']  = tasks.getEndpointDataParameter(command.serviceProvidername, "tenancy", false);

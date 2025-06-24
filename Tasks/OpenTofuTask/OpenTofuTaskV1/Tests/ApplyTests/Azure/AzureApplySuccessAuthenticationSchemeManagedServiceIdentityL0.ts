@@ -1,11 +1,11 @@
-import { TerraformCommandHandlerAzureRM } from '../../../src/azure-opentofu-command-handler';
+import { OpenTofuCommandHandlerAzureRM } from '../../../src/azure-opentofu-command-handler';
 import tl = require('azure-pipelines-task-lib');
 
-let terraformCommandHandlerAzureRM: TerraformCommandHandlerAzureRM = new TerraformCommandHandlerAzureRM();
+let opentofuCommandHandlerAzureRM: OpenTofuCommandHandlerAzureRM = new OpenTofuCommandHandlerAzureRM();
 
 export async function run() {
     try {
-        const response = await terraformCommandHandlerAzureRM.apply();
+        const response = await opentofuCommandHandlerAzureRM.apply();
         if (response === 0) {
             tl.setResult(tl.TaskResult.Succeeded, 'AzureApplySuccessAuthenticationSchemeManagedServiceIdentityL0 should have succeeded.');
         } else{

@@ -1,8 +1,8 @@
-import { BaseOpentofuCommandHandler } from './base-terraform-command-handler';
-import { TerraformCommandHandlerAzureRM } from './azure-opentofu-command-handler';
-import { TerraformCommandHandlerAWS } from './aws-opentofu-command-handler';
-import { TerraformCommandHandlerGCP } from './gcp-terraform-command-handler';
-import { TerraformCommandHandlerOCI } from './oci-terraform-command-handler';
+import { BaseOpenTofuCommandHandler } from './base-opentofu-command-handler';
+import { OpenTofuCommandHandlerAzureRM } from './azure-opentofu-command-handler';
+import { OpenTofuCommandHandlerAWS } from './aws-opentofu-command-handler';
+import { OpenTofuCommandHandlerGCP } from './gcp-opentofu-command-handler' //'./gcp-opentofu-command-handler';
+import { OpenTofuCommandHandlerOCI } from './oci-opentofu-command-handler';
 
 export interface IParentCommandHandler {
     execute(providerName: string, command: string): Promise<number>;
@@ -11,23 +11,23 @@ export interface IParentCommandHandler {
 export class ParentCommandHandler implements IParentCommandHandler {
     public async execute(providerName: string, command: string): Promise<number> {
         // Create corresponding command handler according to provider name
-        let provider: BaseOpentofuCommandHandler;
+        let provider: BaseOpenTofuCommandHandler;
 
         switch(providerName) {
             case "azurerm":
-                provider = new TerraformCommandHandlerAzureRM();
+                provider = new OpenTofuCommandHandlerAzureRM();
                 break;
             
             case "aws":
-                provider = new TerraformCommandHandlerAWS();
+                provider = new OpenTofuCommandHandlerAWS();
                 break;
             
             case "gcp":
-                provider = new TerraformCommandHandlerGCP();
+                provider = new OpenTofuCommandHandlerGCP();
                 break;
             
             case "oci":
-                provider = new TerraformCommandHandlerOCI();
+                provider = new OpenTofuCommandHandlerOCI();
                 break;
         }
 
